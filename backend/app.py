@@ -112,17 +112,37 @@ def analyze():
     data = request.get_json()
     prompt = data.get("prompt", "")
 
-    # Dummy logic (to be replaced later)
-    token_count = len(prompt.split())
-    carbon_cost = round(token_count * 0.0002, 5)  # mock estimate
-    roast = f"Bruh... {token_count} tokens? That's {carbon_cost}g CO₂ wasted!"
-    greener = "Try: 'Summarize this text' instead of 'Can you please kindly...'" 
+    if not prompt.strip():
+        return jsonify({"error": "No prompt provided"}), 400
+
+    # Use proper token counting and carbon calculation
+    token_count = count_tokens(prompt)
+    carbon_cost = calculate_carbon_footprint(token_count)
+    roast_level = get_roast_level(token_count, carbon_cost)
+    roast = generate_roast(token_count, carbon_cost, roast_level)
+    
+    # Get AI-generated rewrite and analysis
+    rewrite = get_claude_rewrite(prompt)
+    claude_analysis = get_claude_analysis(prompt)
+    
+    # Calculate potential savings
+    rewrite_tokens = count_tokens(rewrite)
+    token_savings = max(0, token_count - rewrite_tokens)
+    carbon_savings = calculate_carbon_footprint(token_savings)
+    
+    # Calculate efficiency score (100 - waste percentage)
+    efficiency_score = max(0, 100 - (token_count / 10))  # Simple scoring
 
     return jsonify({
         "tokens": token_count,
         "carbon": carbon_cost,
         "roast": roast,
-        "rewrite": greener
+        "rewrite": rewrite,
+        "roast_level": roast_level,
+        "claude_analysis": claude_analysis,
+        "token_savings": token_savings,
+        "carbon_savings": carbon_savings,
+        "efficiency_score": efficiency_score
     })
 
 if __name__ == "__main__":

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState } from 'react'
 import './App.css'
 
@@ -19,7 +18,7 @@ function App() {
     setAnalysis(null)
 
     try {
-      const response = await fetch('http://localhost:5000/analyze', {
+      const response = await fetch('http://localhost:6767/analyze', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,7 +73,7 @@ function App() {
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Type your prompt here... (e.g., 'Can you please kindly help me write a very detailed and comprehensive email to my boss about the project status update that I need to send tomorrow morning')"
+            placeholder="Type your prompt here..."
             className="prompt-input"
             rows={4}
           />
@@ -167,46 +166,6 @@ function App() {
       </footer>
     </div>
   )
-=======
-import { useState } from "react";
-
-function App() {
-  const [prompt, setPrompt] = useState("");
-  const [result, setResult] = useState(null);
-
-  const analyzePrompt = async () => {
-    const res = await fetch("http://127.0.0.1:5000/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt })
-    });
-    const data = await res.json();
-    setResult(data);
-  };
-
-  return (
-    <div className="p-6">
-      <textarea
-        className="border p-2"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        placeholder="Paste your prompt here..."
-      />
-      <button
-        className="bg-green-500 text-white px-4 py-2 mt-2"
-        onClick={analyzePrompt}
-      >
-        Analyze
-      </button>
-      {result && (
-        <div className="mt-4">
-          <h2 className="font-bold">Roast:</h2>
-          <p>{result.roast}</p>
-        </div>
-      )}
-    </div>
-  );
->>>>>>> 93d0d3d08a6fe20e9c2abffe60421505a79ab209
 }
 
-export default App;
+export default App
