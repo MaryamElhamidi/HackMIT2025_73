@@ -1,20 +1,12 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from flask_cors import CORS
-import os
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/analyze", methods=["POST"])
-def analyze():
-    data = request.get_json()
-    prompt = data.get("prompt", "")
-    token_count = len(prompt.split())
-    return jsonify({
-        "tokens": token_count,
-        "roast": f"Wow… {token_count} words!"
-    })
+@app.route("/")
+def home():
+    return jsonify({"message": "Flask is running!"})
 
-if __name__=="__main__":
-    app.run(host=os.getenv('IP', '0.0.0.0'), 
-            port=int(os.getenv('PORT', 4444)))
+if __name__ == "__main__":
+    app.run(debug=True, port=3999)
