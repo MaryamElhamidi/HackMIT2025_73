@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [prompt, setPrompt] = useState("");
+  const [result, setResult] = useState(null);
+
+  const analyzePrompt = async () => {
+    const res = await fetch("http://127.0.0.1:5000/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    });
+    const data = await res.json();
+    setResult(data);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="p-6">
+      <textarea
+        className="border p-2"
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        placeholder="Paste your prompt here..."
+      />
+      <button
+        className="bg-green-500 text-white px-4 py-2 mt-2"
+        onClick={analyzePrompt}
+      >
+        Analyze
+      </button>
+      {result && (
+        <div className="mt-4">
+          <h2 className="font-bold">Roast:</h2>
+          <p>{result.roast}</p>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
