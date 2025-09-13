@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import anthropic
 import tiktoken
@@ -11,7 +11,11 @@ import random
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # allows React frontend to talk to Flask backend
+CORS(app)
+
+@app.route("/")
+def home():
+    return jsonify({"message": "Flask is running!"})
 
 # Initialize Claude client
 claude_client = anthropic.Client(api_key=os.getenv("ANTHROPIC_API_KEY"))
@@ -107,45 +111,19 @@ def get_claude_analysis(prompt):
 def analyze():
     data = request.get_json()
     prompt = data.get("prompt", "")
-    
-    if not prompt.strip():
-        return jsonify({"error": "Please provide a prompt to analyze"}), 400
 
-    # Count tokens accurately
-    token_count = count_tokens(prompt)
-    carbon_footprint = calculate_carbon_footprint(token_count)
-    
-    # Determine roast level
-    roast_level = get_roast_level(token_count, carbon_footprint)
-    
-    # Generate roast
-    roast = generate_roast(token_count, carbon_footprint, roast_level)
-    
-    # Get Claude's analysis and rewrite
-    claude_analysis = get_claude_analysis(prompt)
-    greener_rewrite = get_claude_rewrite(prompt)
-    
-    # Calculate savings if rewrite is provided
-    rewrite_tokens = count_tokens(greener_rewrite) if greener_rewrite else token_count
-    carbon_savings = carbon_footprint - calculate_carbon_footprint(rewrite_tokens)
-    token_savings = token_count - rewrite_tokens
-    
+    # Dummy logic (to be replaced later)
+    token_count = len(prompt.split())
+    carbon_cost = round(token_count * 0.0002, 5)  # mock estimate
+    roast = f"Bruh... {token_count} tokens? That's {carbon_cost}g CO₂ wasted!"
+    greener = "Try: 'Summarize this text' instead of 'Can you please kindly...'" 
+
     return jsonify({
         "tokens": token_count,
-        "carbon": carbon_footprint,
+        "carbon": carbon_cost,
         "roast": roast,
-        "rewrite": greener_rewrite,
-        "rewrite_tokens": rewrite_tokens,
-        "carbon_savings": round(carbon_savings, 4),
-        "token_savings": token_savings,
-        "roast_level": roast_level,
-        "claude_analysis": claude_analysis,
-        "efficiency_score": max(0, min(100, 100 - (token_count / 10)))  # Simple efficiency score
+        "rewrite": greener
     })
 
-@app.route("/health", methods=["GET"])
-def health():
-    return jsonify({"status": "healthy", "service": "Green Roast API"})
-
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True)
