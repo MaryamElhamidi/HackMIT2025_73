@@ -241,5 +241,7 @@ def generate_song():
 
 # --------------------------
 
-if __name__ == "__main__":
-    app.run(debug=True, port=6767)
+# Run the app
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 6767))  # Changed to 6767 to match your Vite proxy
+    app.run(debug=False, host='0.0.0.0', port=port)

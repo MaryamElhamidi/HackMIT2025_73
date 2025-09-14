@@ -1,0 +1,11 @@
+streamlit==1.37.0
+openai==1.35.10
+flask
+flask-cors
+tiktoken   # for token counting
+transformers  # if you want HuggingFace models for rewrites
+torch       # required for transformers
+anthropic
+pymongo
+python-dotenv
+gunicorn==23.0.0
