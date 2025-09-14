@@ -13,6 +13,8 @@ const ResultsPage = () => {
   
   const [currentRoastIndex, setCurrentRoastIndex] = useState(0);
   const [progressWidth, setProgressWidth] = useState(0);
+  const [songLoading, setSongLoading] = useState(false);
+  const [song, setSong] = useState(null);
 
   // Mock multiple roasts for demonstration
   const roasts = analysisData?.roast ? [analysisData.roast] : [
@@ -22,54 +24,61 @@ const ResultsPage = () => {
     "Even trees are crying looking at this carbon footprint!"
   ];
 
-  // Get the appropriate tree image based on carbon footprint level
+  // Get the appropriate tree image based on carbon footprint level (in grams)
   const getTreeImage = (carbonCost) => {
-    if (carbonCost < 1.0) return happyTreeImage;      // Low impact - sad tree
-    if (carbonCost < 1.5) return smileTreeImage;    // Moderate impact - smile tree  
-    return sadTreeImage;                          // High/Very High impact - happy tree
+    if (carbonCost < 0.1) return happyTreeImage;      // Efficient - happy tree
+    if (carbonCost < 0.5) return smileTreeImage;    // Moderate - smile tree  
+    return sadTreeImage;                          // Wasteful - sad tree
   };
 
   const treeImage = getTreeImage(analysisData?.carbon_cost || 0);
   
   // Get appropriate alt text for the tree
   const getTreeAltText = (carbonCost) => {
-    if (carbonCost < 1.0) return "Happy Tree - Low Impact";
-    if (carbonCost < 1.5) return "Smile Tree - Moderate Impact";
-    return "Sad Tree - High Impact";
+    if (carbonCost < 0.1) return "Happy Tree - Efficient";
+    if (carbonCost < 0.5) return "Smile Tree - Moderate";
+    return "Sad Tree - Wasteful";
   };
 
   // Get meme-friendly messages based on carbon footprint
   const getMemeMessage = (carbonCost) => {
-    if (carbonCost < 1.0) return "🌱 This tree is THRIVING! Your prompt is basically plant food!";
-    if (carbonCost < 1.5) return "😊 This tree is vibing! Not too shabby, not too crazy!";
+    if (carbonCost < 0.1) return "🌱 This tree is THRIVING! Your prompt is basically plant food!";
+    if (carbonCost < 0.5) return "😊 This tree is vibing! Not too shabby, not too crazy!";
     return "😢 This tree is NOT having it! Your prompt is giving it climate anxiety!";
   };
 
   // Get fun impact emoji
   const getImpactEmoji = (carbonCost) => {
-    if (carbonCost < 1.0) return "🌱";
-    if (carbonCost < 1.5) return "😊";
+    if (carbonCost < 0.1) return "🌱";
+    if (carbonCost < 0.5) return "😊";
     return "😢";
   };
 
   // Calculate progress bar color and width
   const getProgressColor = (carbonCost) => {
-    if (carbonCost < 0.5) return "#22c55e, #16a34a";
-    if (carbonCost < 1.0) return "#eab308, #ca8a04";
-    if (carbonCost < 1.5) return "#f97316, #ea580c";
+    if (carbonCost < 0.1) return "#22c55e, #16a34a";
+    if (carbonCost < 0.5) return "#eab308, #ca8a04";
     return "#ef4444, #dc2626";
   };
 
   const getProgressWidth = (carbonCost) => {
-    // Assuming max carbon cost of 3.0 for visualization
-    return Math.min((carbonCost / 3.0) * 100, 100);
+    // Position based on impact level ranges - fill the appropriate section
+    if (carbonCost < 0.1) {
+      // Efficient: 0-33% of the bar
+      return Math.min((carbonCost / 0.1) * 33, 33);
+    } else if (carbonCost < 0.5) {
+      // Moderate: Fill the moderate section (33-66%)
+      return 66; // Always fill to the end of moderate section
+    } else {
+      // Wasteful: Fill the wasteful section (66-100%)
+      return 100; // Always fill to the end of wasteful section
+    }
   };
 
   const getImpactLevel = (carbonCost) => {
-    if (carbonCost < 0.5) return { level: "Low", color: "#16a34a", bg: "#f0fdf4" };
-    if (carbonCost < 1.0) return { level: "Moderate", color: "#ca8a04", bg: "#fefce8" };
-    if (carbonCost < 1.5) return { level: "High", color: "#ea580c", bg: "#fff7ed" };
-    return { level: "Very High", color: "#dc2626", bg: "#fef2f2" };
+    if (carbonCost < 0.1) return { level: "Efficient", color: "#16a34a", bg: "#f0fdf4" };
+    if (carbonCost < 0.5) return { level: "Moderate", color: "#ca8a04", bg: "#fefce8" };
+    return { level: "Wasteful", color: "#dc2626", bg: "#fef2f2" };
   };
 
   useEffect(() => {
@@ -86,6 +95,39 @@ const ResultsPage = () => {
 
   const handleNewPrompt = () => {
     navigate('/');
+  };
+
+  const generateSong = async () => {
+    if (!analysisData) return;
+    
+    setSongLoading(true);
+    setSong(null);
+    
+    try {
+      const response = await fetch('/song', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: analysisData.prompt,
+          roast: analysisData.roast,
+          style: 'kendrick'
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate song');
+      }
+      
+      const songData = await response.json();
+      setSong(songData);
+    } catch (error) {
+      console.error('Error generating song:', error);
+      // You could add a toast notification here
+    } finally {
+      setSongLoading(false);
+    }
   };
 
   if (!analysisData) {
@@ -287,7 +329,7 @@ const ResultsPage = () => {
                       position: 'absolute',
                       width: '4px',
                       height: '4px',
-                      background: analysisData?.carbon_cost < 1.0 ? '#22c55e' : analysisData?.carbon_cost < 1.5 ? '#eab308' : '#ef4444',
+                      background: analysisData?.carbon_cost < 0.1 ? '#22c55e' : analysisData?.carbon_cost < 0.5 ? '#eab308' : '#ef4444',
                       borderRadius: '50%',
                       left: `${20 + (i * 15)}%`,
                       top: `${30 + (i * 10)}%`,
@@ -343,8 +385,8 @@ const ResultsPage = () => {
                   position: 'absolute',
                   bottom: '-10px',
                   right: '-10px',
-                  background: analysisData?.carbon_cost < 1.0 ? 'linear-gradient(135deg, #22c55e, #16a34a)' : 
-                             analysisData?.carbon_cost < 1.5 ? 'linear-gradient(135deg, #eab308, #ca8a04)' : 
+                  background: analysisData?.carbon_cost < 0.1 ? 'linear-gradient(135deg, #22c55e, #16a34a)' : 
+                             analysisData?.carbon_cost < 0.5 ? 'linear-gradient(135deg, #eab308, #ca8a04)' : 
                              'linear-gradient(135deg, #ef4444, #dc2626)',
                   color: 'white',
                   padding: '4px 8px',
@@ -357,7 +399,7 @@ const ResultsPage = () => {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.3 }}
               >
-                {analysisData?.carbon_cost < 1.0 ? '🌱' : analysisData?.carbon_cost < 1.5 ? '😊' : '😢'}
+                {analysisData?.carbon_cost < 0.1 ? '🌱' : analysisData?.carbon_cost < 0.5 ? '😊' : '😢'}
               </motion.div>
             </motion.div>
 
@@ -406,7 +448,7 @@ const ResultsPage = () => {
                       textTransform: 'uppercase', 
                       letterSpacing: '0.05em' 
                     }}>
-                      Original Length
+                      Tokens used:
                     </p>
                     <div style={{ 
                       width: '32px', 
@@ -464,7 +506,7 @@ const ResultsPage = () => {
                   <p style={{ fontSize: '32px', fontWeight: 'bold', color: '#262626', margin: 0 }}>
                     {analysisData.carbon_cost}
                   </p>
-                  <p style={{ color: '#737373', fontSize: '14px', margin: '4px 0 8px 0' }}>kg CO₂</p>
+                  <p style={{ color: '#737373', fontSize: '14px', margin: '4px 0 8px 0' }}>g CO₂</p>
                   <div style={{ 
                     display: 'inline-flex', 
                     alignItems: 'center', 
@@ -477,6 +519,47 @@ const ResultsPage = () => {
                   }}>
                     {impactLevel.level} Impact
                   </div>
+                </motion.div>
+
+                {/* Efficiency Score Card */}
+                <motion.div 
+                  style={{
+                    background: 'linear-gradient(135deg, #f0f9ff, white)',
+                    border: '1px solid #e5e5e5',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    boxShadow: '0 2px 15px -3px rgba(0, 0, 0, 0.07)'
+                  }}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <p style={{ 
+                      color: '#525252', 
+                      fontSize: '12px', 
+                      fontWeight: '500', 
+                      textTransform: 'uppercase', 
+                      letterSpacing: '0.05em' 
+                    }}>
+                      Efficiency Score:
+                    </p>
+                    <div style={{ 
+                      width: '32px', 
+                      height: '32px', 
+                      background: '#dbeafe', 
+                      borderRadius: '50%', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center' 
+                    }}>
+                      <span style={{ color: '#2563eb', fontSize: '14px', fontWeight: 'bold' }}>⚡</span>
+                    </div>
+                  </div>
+                  <p style={{ fontSize: '32px', fontWeight: 'bold', color: '#262626', margin: 0 }}>
+                    {Math.round(analysisData.efficiency_score || 0)}/100
+                  </p>
+                  <p style={{ color: '#737373', fontSize: '14px', margin: '4px 0 0 0' }}>points</p>
                 </motion.div>
               </div>
 
@@ -543,7 +626,7 @@ const ResultsPage = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.9, duration: 0.4 }}
                   >
-                    0 - 3.0 kg CO₂
+                    0 - 2.0 g CO₂
                   </motion.span>
                 </div>
                 
@@ -597,10 +680,9 @@ const ResultsPage = () => {
                   position: 'relative',
                   zIndex: 1
                 }}>
-                  <span>🌱 Low</span>
+                  <span>🌱 Efficient</span>
                   <span>😊 Moderate</span>
-                  <span>😐 High</span>
-                  <span>😢 Very High</span>
+                  <span>😢 Wasteful</span>
                 </div>
               </motion.div>
             </div>
@@ -778,6 +860,268 @@ const ResultsPage = () => {
                 </motion.button>
               </motion.div>
             )}
+          </motion.div>
+
+          {/* Roast Song Section */}
+          <motion.div 
+            style={{
+              background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%)',
+              border: '2px solid #fde68a',
+              borderRadius: '24px',
+              padding: '36px',
+              marginBottom: '32px',
+              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.5)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.9, duration: 0.6 }}
+          >
+            {/* Animated music background */}
+            <div style={{
+              position: 'absolute',
+              top: '-20px',
+              right: '-20px',
+              width: '100px',
+              height: '100px',
+              background: 'radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, transparent 70%)',
+              borderRadius: '50%',
+              animation: 'spin 10s linear infinite'
+            }}></div>
+            
+            <motion.div 
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '16px', 
+                marginBottom: '20px',
+                position: 'relative',
+                zIndex: 1
+              }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.1, duration: 0.5 }}
+            >
+              <motion.div 
+                style={{ 
+                  width: '48px', 
+                  height: '48px', 
+                  background: 'linear-gradient(135deg, #fde68a, #f59e0b)', 
+                  borderRadius: '50%', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)'
+                }}
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <span style={{ color: '#d97706', fontSize: '24px' }}>🎵</span>
+              </motion.div>
+              <h3 style={{ 
+                color: '#92400e', 
+                fontSize: '22px', 
+                fontWeight: '700', 
+                textTransform: 'uppercase', 
+                letterSpacing: '0.1em',
+                margin: 0,
+                textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}>
+                Roast Song 🎤
+              </h3>
+            </motion.div>
+
+            <motion.div
+              style={{ position: 'relative', zIndex: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 0.5 }}
+            >
+              <motion.button 
+                onClick={generateSong}
+                disabled={songLoading}
+                style={{ 
+                  background: songLoading ? 'linear-gradient(135deg, #9ca3af, #6b7280)' : 'linear-gradient(135deg, #f59e0b, #d97706)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '16px',
+                  padding: '16px 32px',
+                  fontSize: '16px',
+                  fontWeight: '700',
+                  cursor: songLoading ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: songLoading ? '0 4px 15px rgba(156, 163, 175, 0.3)' : '0 8px 25px rgba(245, 158, 11, 0.3)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginBottom: song ? '24px' : '0'
+                }}
+                whileHover={songLoading ? {} : { 
+                  scale: 1.05,
+                  boxShadow: '0 12px 35px rgba(245, 158, 11, 0.4)'
+                }}
+                whileTap={songLoading ? {} : { scale: 0.95 }}
+                animate={songLoading ? {} : {
+                  boxShadow: [
+                    '0 8px 25px rgba(245, 158, 11, 0.3)',
+                    '0 12px 35px rgba(245, 158, 11, 0.4)',
+                    '0 8px 25px rgba(245, 158, 11, 0.3)'
+                  ]
+                }}
+                transition={songLoading ? {} : {
+                  boxShadow: {
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                }}
+              >
+                {songLoading ? (
+                  <>
+                    <motion.div
+                      style={{
+                        width: '16px',
+                        height: '16px',
+                        border: '2px solid rgba(255,255,255,0.3)',
+                        borderTop: '2px solid white',
+                        borderRadius: '50%'
+                      }}
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    />
+                    <span>Generating Song...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>🎤 Generate Roast Song</span>
+                    {/* Button shimmer effect */}
+                    <motion.div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: '-100%',
+                        width: '100%',
+                        height: '100%',
+                        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+                        borderRadius: '16px'
+                      }}
+                      animate={{ left: ['100%', '100%'] }}
+                      transition={{ duration: 2, delay: 1.5, ease: "easeInOut" }}
+                    />
+                  </>
+                )}
+              </motion.button>
+
+              {song && song.audio_url && (
+                <motion.div
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(254, 243, 199, 0.9))',
+                    border: '1px solid rgba(245, 158, 11, 0.3)',
+                    borderRadius: '20px',
+                    padding: '24px',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  {/* Song cover image */}
+                  {song.image_url && (
+                    <motion.div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginBottom: '20px'
+                      }}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.2, duration: 0.5 }}
+                    >
+                      <img 
+                        src={song.image_url} 
+                        alt="Song cover" 
+                        style={{
+                          maxWidth: '200px',
+                          borderRadius: '16px',
+                          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+                        }}
+                      />
+                    </motion.div>
+                  )}
+
+                  {/* Song title */}
+                  <motion.h4
+                    style={{
+                      color: '#92400e',
+                      fontSize: '20px',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      margin: '0 0 16px 0',
+                      textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                    }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.4 }}
+                  >
+                    {song.title || 'Green Roast Diss Track'}
+                  </motion.h4>
+
+                  {/* Audio player */}
+                  <motion.div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.4 }}
+                  >
+                    <audio 
+                      controls 
+                      src={song.audio_url}
+                      style={{
+                        width: '100%',
+                        maxWidth: '400px',
+                        borderRadius: '12px',
+                        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
+                  </motion.div>
+
+                  {/* Song status */}
+                  {song.status && (
+                    <motion.div
+                      style={{
+                        textAlign: 'center',
+                        marginTop: '12px',
+                        color: '#92400e',
+                        fontSize: '14px',
+                        fontWeight: '500'
+                      }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.5, duration: 0.4 }}
+                    >
+                      Status: {song.status === 'streaming' ? '🎵 Streaming...' : '✅ Complete'}
+                    </motion.div>
+                  )}
+                </motion.div>
+              )}
+            </motion.div>
           </motion.div>
 
           {/* Suggested Rewrite Section */}

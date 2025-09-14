@@ -10,6 +10,11 @@ export default defineConfig({
         target: 'http://localhost:6767',
         changeOrigin: true,
         secure: false,
+      },
+      '/song': {
+        target: 'http://localhost:6767',
+        changeOrigin: true,
+        secure: false,
       }
     }
   }
