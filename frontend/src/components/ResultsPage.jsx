@@ -6,6 +6,8 @@ import smileTreeImage from '../assets/smile_tree.jpg';
 import sadTreeImage from '../assets/sad_tree.jpg';
 import greenRoastLogo from '../assets/GreenRoastLogo.png';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:6767'
+
 const ResultsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -104,7 +106,7 @@ const ResultsPage = () => {
     setSong(null);
     
     try {
-      const response = await fetch('/song', {
+      const response = await fetch(`${API_URL}/song`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

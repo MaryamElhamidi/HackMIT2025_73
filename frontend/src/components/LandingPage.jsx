@@ -5,6 +5,9 @@ import { getRandomDemoData } from './DemoData';
 import happyTreeImage from '../assets/happy_tree.jpg';
 import greenRoastLogo from '../assets/GreenRoastLogo.png';
 
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:6767'
+
 const LandingPage = () => {
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +51,7 @@ const LandingPage = () => {
       setIsLoading(true);
       try {
         // Call the backend API
-        const response = await fetch('/analyze', {
+        const response = await fetch(`${API_URL}/analyze`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
