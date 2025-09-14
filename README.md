@@ -1,4 +1,4 @@
-# 🌱 Green Roast - Carbon Footprint Roaster for AI Prompts
+# 🌱 [Green Roast](https://greenroastfront.vercel.app/) - Carbon Footprint Roaster for AI Prompts
 
 A fun and educational web application that analyzes AI prompts for their carbon footprint and provides humorous feedback along with suggestions for more efficient alternatives.  
 
