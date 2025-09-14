@@ -52,7 +52,6 @@ def get_roast_level(tokens: int, carbon: float) -> str:
         return "wasteful"
     else:
         return "excessive"
-#test
 def generate_roast(tokens: int, carbon: float, roast_level: str) -> str:
     """Pick a roast line based on level"""
     roasts = {
@@ -147,7 +146,7 @@ def analyze():
     result = {
         "prompt": prompt,
         "tokens": token_count,
-        "carbon": carbon_cost,
+        "carbon_cost": carbon_cost,
         "roast": roast,
         "rewrite": rewrite,
         "roast_level": roast_level,

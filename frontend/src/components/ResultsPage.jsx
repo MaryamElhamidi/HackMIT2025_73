@@ -1125,60 +1125,95 @@ const ResultsPage = () => {
           </motion.div>
 
           {/* Suggested Rewrite Section */}
-          <motion.div 
-            style={{
-              background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)',
-              border: '1px solid #bbf7d0',
-              borderRadius: '16px',
-              padding: '32px',
-              marginBottom: '32px',
-              boxShadow: '0 2px 15px -3px rgba(0, 0, 0, 0.07)'
-            }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.0, duration: 0.5 }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+          {analysisData.rewrite && (
+            <motion.div 
+              style={{
+                background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)',
+                border: '1px solid #bbf7d0',
+                borderRadius: '16px',
+                padding: '32px',
+                marginBottom: '32px',
+                boxShadow: '0 2px 15px -3px rgba(0, 0, 0, 0.07)'
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.0, duration: 0.5 }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ 
+                  width: '40px', 
+                  height: '40px', 
+                  background: '#dcfce7', 
+                  borderRadius: '50%', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center' 
+                }}>
+                  <span style={{ color: '#16a34a', fontSize: '18px' }}>🌱</span>
+                </div>
+                <h3 style={{ 
+                  color: '#166534', 
+                  fontSize: '18px', 
+                  fontWeight: '600', 
+                  textTransform: 'uppercase', 
+                  letterSpacing: '0.05em' 
+                }}>
+                  Greener Alternative
+                </h3>
+              </div>
+              
               <div style={{ 
-                width: '40px', 
-                height: '40px', 
-                background: '#dcfce7', 
-                borderRadius: '50%', 
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.8), rgba(240,253,244,0.8))',
+                border: '1px solid rgba(187, 247, 208, 0.5)',
+                borderRadius: '12px',
+                padding: '20px',
+                marginBottom: '16px'
+              }}>
+                <p style={{ 
+                  fontSize: '18px', 
+                  fontWeight: '500', 
+                  color: '#14532d', 
+                  lineHeight: '1.6',
+                  margin: '0 0 16px 0'
+                }}>
+                  {analysisData.rewrite}
+                </p>
+              </div>
+              
+              <div style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
-                justifyContent: 'center' 
+                gap: '12px',
+                flexWrap: 'wrap'
               }}>
-                <span style={{ color: '#16a34a', fontSize: '18px' }}>🌱</span>
+                <div style={{ 
+                  display: 'inline-flex', 
+                  alignItems: 'center', 
+                  padding: '8px 16px', 
+                  background: '#dcfce7', 
+                  borderRadius: '20px',
+                  border: '1px solid #bbf7d0'
+                }}>
+                  <span style={{ color: '#15803d', fontSize: '14px', fontWeight: '500' }}>✨ More sustainable approach</span>
+                </div>
+                
+                {analysisData.token_savings > 0 && (
+                  <div style={{ 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    padding: '8px 16px', 
+                    background: 'linear-gradient(135deg, #dbeafe, #bfdbfe)', 
+                    borderRadius: '20px',
+                    border: '1px solid #93c5fd'
+                  }}>
+                    <span style={{ color: '#1e40af', fontSize: '14px', fontWeight: '600' }}>
+                      💾 Saves {analysisData.token_savings} tokens ({analysisData.carbon_savings}g CO₂)
+                    </span>
+                  </div>
+                )}
               </div>
-              <h3 style={{ 
-                color: '#166534', 
-                fontSize: '18px', 
-                fontWeight: '600', 
-                textTransform: 'uppercase', 
-                letterSpacing: '0.05em' 
-              }}>
-                Greener Alternative
-              </h3>
-            </div>
-            <p style={{ 
-              fontSize: '24px', 
-              fontWeight: 'bold', 
-              color: '#14532d', 
-              lineHeight: '1.5',
-              margin: '0 0 16px 0'
-            }}>
-              {analysisData.rewrite}
-            </p>
-            <div style={{ 
-              display: 'inline-flex', 
-              alignItems: 'center', 
-              padding: '8px 16px', 
-              background: '#dcfce7', 
-              borderRadius: '20px' 
-            }}>
-              <span style={{ color: '#15803d', fontSize: '14px', fontWeight: '500' }}>✨ More sustainable approach</span>
-            </div>
-          </motion.div>
+            </motion.div>
+          )}
 
           {/* Action Buttons */}
           <motion.div 

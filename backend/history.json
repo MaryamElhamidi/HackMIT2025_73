@@ -502,5 +502,77 @@
     "token_savings": 0,
     "carbon_savings": 0.0,
     "efficiency_score": 99.0
+  },
+  {
+    "prompt": "HI",
+    "tokens": 1,
+    "carbon_cost": 0.0013,
+    "roast": "Prompt so lean it just applied for a modelling contract \ud83d\udcf8",
+    "rewrite": "HI",
+    "roast_level": "efficient",
+    "claude_analysis": "WASTEFUL\n\nReason: The prompt \"HI\" is a very short and simple input that does not require a complex analysis or response. It is a basic greeting that could be efficiently handled with a simple, direct response rather than a detailed analysis.",
+    "token_savings": 0,
+    "carbon_savings": 0.0,
+    "efficiency_score": 99.9
+  },
+  {
+    "prompt": "WRITE ME A BILLION PAGE PAPER ON HOW JELLY FISH STINGS AFFECT AFRICAN AMERICANS IN SOUTH EAST ASIABEFORE A BASKET BALL GAME ON A FRIDAY AFTERNOON AT 12 O CLOCK ON A FULL MOON, WHERE THEY GET ATATACKED BY VAMPIRES MEANING AND THEN THEY TURN INTO VAMPIRES AND CANT PLAY BASKETBALL ANYMORE SO NOW STUCK INSIDE PLAYING LEAUGE OF LEGENDS",
+    "tokens": 108,
+    "carbon_cost": 0.135,
+    "roast": "Ok but why does this read like you\u2019re getting paid by the word?",
+    "rewrite": "WRITE A PAPER ON HOW JELLYFISH STINGS AFFECT AFRICAN AMERICANS IN SOUTHEAST ASIA BEFORE A BASKETBALL GAME ON A FRIDAY AT 12 PM DURING A FULL MOON, WHERE THEY ARE ATTACKED BY VAMPIRES AND TURN INTO VAMPIRES, UNABLE TO PLAY BASKETBALL AND INSTEAD PLAY LEAGUE OF LEGENDS.",
+    "roast_level": "moderate",
+    "claude_analysis": "WASTEFUL\n\nThe prompt is extremely specific, unrealistic, and overly detailed. Requesting a billion-page paper on such a narrow and far-fetched topic is not an efficient use of time or resources. The prompt includes numerous unnecessary and irrelevant details that would not contribute to a meaningful or informative paper.",
+    "token_savings": 17,
+    "carbon_savings": 0.0213,
+    "efficiency_score": 89.2
+  },
+  {
+    "prompt": "WRITE ME A BILLION PAGE PAPER ON HOW JELLY FISH STINGS AFFECT AFRICAN AMERICANS IN SOUTH EAST ASIABEFORE A BASKET BALL GAME ON A FRIDAY AFTERNOON AT 12 O CLOCK ON A FULL MOON, WHERE THEY GET ATATACKED BY VAMPIRES MEANING AND THEN THEY TURN INTO VAMPIRES AND CANT PLAY BASKETBALL ANYMORE SO NOW STUCK INSIDE PLAYING LEAUGE OF LEGENDS",
+    "tokens": 108,
+    "carbon_cost": 0.135,
+    "roast": "This prompt is giving \u2018middle child energy\u2019 \u2014 not bad, not great. \ud83c\udf0d",
+    "rewrite": "Write a paper on how jellyfish stings affect African Americans in Southeast Asia before a basketball game on a Friday at noon during a full moon, where they are attacked by vampires and turn into vampires, preventing them from playing basketball.",
+    "roast_level": "moderate",
+    "claude_analysis": "WASTEFUL\n\nThe prompt is extremely specific, overly detailed, and requests an unrealistic and impractical task (a billion-page paper). It also includes irrelevant and fantastical elements that have no clear connection to the main topic. This makes the prompt highly inefficient and unlikely to produce a useful or meaningful response.",
+    "token_savings": 62,
+    "carbon_savings": 0.0775,
+    "efficiency_score": 89.2
+  },
+  {
+    "prompt": "hello",
+    "tokens": 1,
+    "carbon_cost": 0.0013,
+    "roast": "You wrote that like you pay for tokens yourself. Respect \ud83d\udcb8",
+    "rewrite": "hello",
+    "roast_level": "efficient",
+    "claude_analysis": "WASTEFUL\n\nReason: The prompt \"hello\" is a very simple and generic greeting, which does not provide any specific context or information that an AI system would need to provide a meaningful response. This type of prompt is considered wasteful as it does not give the AI system enough information to engage in a productive conversation or task.",
+    "token_savings": 0,
+    "carbon_savings": 0.0,
+    "efficiency_score": 99.9
+  },
+  {
+    "prompt": "\"WRITE ME A BILLION PAGE PAPER ON HOW JELLY FISH STINGS AFFECT AFRICAN AMERICANS IN SOUTH EAST ASIABEFORE A BASKET BALL GAME ON A FRIDAY AFTERNOON AT 12 O CLOCK ON A FULL MOON, WHERE THEY GET ATATACKED BY VAMPIRES MEANING AND THEN THEY TURN INTO VAMPIRES AND CANT PLAY BASKETBALL ANYMORE SO NOW STUCK INSIDE PLAYING LEAUGE OF LEGENDS\"",
+    "tokens": 110,
+    "carbon_cost": 0.1375,
+    "roast": "Congrats, you\u2019re the diet version of wasteful. Half sugar, half shame \ud83e\udd64",
+    "rewrite": "\"Write a paper on how jellyfish stings affect African Americans in Southeast Asia during a basketball game on a Friday afternoon.\"",
+    "roast_level": "moderate",
+    "claude_analysis": "WASTEFUL\n\nReason: This prompt is extremely broad, unrealistic, and lacks any clear or focused objective. Asking an AI to write a billion-page paper on such a specific and fantastical scenario is an inefficient use of the AI's capabilities. The prompt is overly detailed and contains many unrealistic elements, making it impractical and unlikely to produce a useful or meaningful output.",
+    "token_savings": 85,
+    "carbon_savings": 0.1063,
+    "efficiency_score": 89.0
+  },
+  {
+    "prompt": "hello",
+    "tokens": 1,
+    "carbon_cost": 0.0013,
+    "roast": "You wrote that like you pay for tokens yourself. Respect \ud83d\udcb8",
+    "rewrite": "hello",
+    "roast_level": "efficient",
+    "claude_analysis": "WASTEFUL\n\nReason: The prompt \"hello\" is very short and does not provide enough context or information for an AI system to generate a meaningful or helpful response. It would be more efficient to provide a more detailed and specific prompt that gives the AI system a clear understanding of the task or information being requested.",
+    "token_savings": 0,
+    "carbon_savings": 0.0,
+    "efficiency_score": 99.9
   }
 ]
