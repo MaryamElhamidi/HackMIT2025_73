@@ -31,7 +31,7 @@ Built for the **Infosys Carbon-Conscious Intelligence Challenge**.
 
 ### Easiest Way  
 No setup required! 🎉  
-👉 [Click here to try Green Roast online]([https://greenroastfront.vercel.app])  
+👉 [Click here to try Green Roast online](https://greenroastfront.vercel.app)  
 
 ### For Developers (Optional: Run Locally)  
 
