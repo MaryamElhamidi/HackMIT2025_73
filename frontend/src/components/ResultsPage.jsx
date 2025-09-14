@@ -64,11 +64,11 @@ const ResultsPage = () => {
   const getProgressWidth = (carbonCost) => {
     // Position based on impact level ranges - fill the appropriate section
     if (carbonCost < 0.1) {
-      // Efficient: 0-33% of the bar
-      return Math.min((carbonCost / 0.1) * 33, 33);
+      // Efficient: Fill most of the efficient section (0-25%)
+      return 8; // Fill most of the efficient section
     } else if (carbonCost < 0.5) {
       // Moderate: Fill the moderate section (33-66%)
-      return 66; // Always fill to the end of moderate section
+      return 50; // Always fill to the end of moderate section
     } else {
       // Wasteful: Fill the wasteful section (66-100%)
       return 100; // Always fill to the end of wasteful section
@@ -228,7 +228,7 @@ const ResultsPage = () => {
           <div style={{ 
             background: 'linear-gradient(135deg, #16a34a 0%, #22c55e 50%, #16a34a 100%)', 
             padding: '40px 32px', 
-            textAlign: 'center',
+            textAlign: 'left',
             position: 'relative',
             overflow: 'hidden'
           }}>
@@ -250,7 +250,7 @@ const ResultsPage = () => {
             >
               <motion.div
                 style={{
-                  display: 'inline-flex',
+                  display: 'flex',
                   alignItems: 'center',
                   gap: '16px',
                   marginBottom: '16px'
@@ -1252,7 +1252,7 @@ const ResultsPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.6 }}
       >
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px', textAlign: 'left' }}>
           <p style={{ color: '#525252', fontSize: '18px', fontWeight: '500' }}>
             Making AI more sustainable, one prompt at a time
           </p>

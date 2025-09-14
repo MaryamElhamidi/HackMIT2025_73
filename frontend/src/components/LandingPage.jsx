@@ -78,7 +78,7 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-pattern">
       {/* Enhanced Navigation */}
-      <nav className="nav-modern px-6 py-4" style={{ 
+      {/* <nav className="nav-modern px-6 py-4" style={{ 
         background: 'rgba(255, 255, 255, 0.9)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(229, 229, 229, 0.3)',
@@ -149,10 +149,10 @@ const LandingPage = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Sign in | Register
+            
           </motion.button>
         </div>
-      </nav>
+      </nav> */}
 
       {/* Enhanced Hero Section */}
       <div style={{ position: 'relative', maxWidth: '1280px', margin: '0 auto', padding: '100px 24px' }}>
