@@ -2,6 +2,7 @@
 
 A fun and educational web application that analyzes AI prompts for their carbon footprint and provides humorous feedback along with suggestions for more efficient alternatives.  
 
+[Presentation Link](https://docs.google.com/presentation/d/184PHNW4bmlIh1W3O0RoM1Gxk-vOkOndLDarEW7f9k2s/edit?usp=sharing)
 ---
 
 ## 🎯 Project Overview  
