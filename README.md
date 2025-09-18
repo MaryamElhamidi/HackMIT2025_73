@@ -4,7 +4,8 @@ A fun and educational web application that analyzes AI prompts for their carbon 
 
 [Presentation Link](https://docs.google.com/presentation/d/184PHNW4bmlIh1W3O0RoM1Gxk-vOkOndLDarEW7f9k2s/edit?usp=sharing)
 
-https://youtu.be/lggRMoP_o2g?si=GkA7-PKh60GkqSR-
+### Demo Video
+[![Demo Video](https://img.youtube.com/vi/lggRMoP_o2g/hqdefault.jpg)](https://www.youtube.com/embed/lggRMoP_o2g)
 
 
 ---
